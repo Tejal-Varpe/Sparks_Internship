@@ -11,21 +11,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     
     <style>
-
-      .logo-text, .nav-link1
-      {
-        color: white;
-        padding-top: 15px;
-      }
-      .list-home
-      {
-        padding-left: 900px;
-      }
-      .nav-link1:hover
-      {
-        color: blue;
-      }
-
+      
       .container
       {
         padding-top: 50px;

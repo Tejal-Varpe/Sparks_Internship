@@ -12,40 +12,15 @@
     
     <style>
 
-    .logo-text, .nav-link1{
-      color: white;
-      padding-top: 15px;
-    }
-    .list-home{
-      padding-left: 900px;
-    }
-    .nav-link1:hover{
-      color: blue;
-    }
-    .container{
+    .container
+    {
       padding-top: 30px;
       text-align: center;
       background-size: cover;
     }
 
-    .button {
-      background-color: #d35a55;
-      border: none;
-      color: white;
-      padding: 5px 10px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      border-radius: 5px;
-    }
-
-    .button:hover{
-      color: #8bb5f5;
-    }
-
     </style>
+    
 </head>
 <body>
 

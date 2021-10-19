@@ -9,107 +9,97 @@ if(isset($_POST['submit']))
 
     $sql = "SELECT * from transactions_2 where id=$from";
     $query = mysqli_query($conn,$sql);
-    $sql1 = mysqli_fetch_array($query); // returns array or output of user from which the amount is to be transferred.
+    $sql1 = mysqli_fetch_array($query); //return output of transaction from which amount is to be transferred
 
     $sql = "SELECT * from transactions_2 where id=$to";
     $query = mysqli_query($conn,$sql);
     $sql2 = mysqli_fetch_array($query);
 
-
-
-    // constraint to check input of negative value by user
+    //Constraint for negative number
     if (($amount)<0)
    {
         echo '<script type="text/javascript">';
-        echo 'alert("Oops! Negative values cannot be transferred")';  // showing an alert box.
+        echo 'alert("Oops! Negative values cannot be transferred")';
         echo '</script>';
     }
 
-
-  
-    // constraint to check insufficient balance.
+    //constraint to check insufficient balance.
     else if($amount > $sql1['amount']) 
-    {
-        
+    { 
         echo '<script type="text/javascript">';
-        echo 'alert("Bad Luck! Insufficient Balance")';  // showing an alert box.
+        echo 'alert("Bad Luck! Insufficient Balance")'; 
         echo '</script>';
     }
-    
-
-
-    // constraint to check zero values
-    else if($amount == 0){
-
+  
+    //constraint to check zero values
+    else if($amount == 0)
+    {
          echo "<script type='text/javascript'>";
          echo "alert('Oops! Zero value cannot be transferred')";
          echo "</script>";
-     }
+    }
 
-
-    else {
-        
-                // deducting amount from sender's account
-                $newbalance1 = $sql1['amount'] - $amount;
-                $sql = "UPDATE transactions_2 set amount=$newbalance1 where id=$from";
-                mysqli_query($conn,$sql);
+    else 
+    {
+      $beforeT1 = $sql1['amount'];
+      //deducting amount from senders account
+      $newbalance1 = $sql1['amount'] - $amount;
+      $sql = "UPDATE transactions_2 set amount=$newbalance1 where id=$from";
+      mysqli_query($conn,$sql);
+          
+      $beforeT2 = $sql2['amount'];
+      // adding amount to reciever's account
+      $newbalance2 = $sql2['amount'] + $amount;
+      $sql = "UPDATE transactions_2 set amount=$newbalance2 where id=$to";
+      mysqli_query($conn,$sql);
                 
-                
+      $sender = $sql1['customer name'];
+      $receiver = $sql2['customer name'];
+      
+      $sql = "INSERT INTO transactions_2(`sender`, `receiver`, `amount`) VALUES ('$sender','$receiver','$amount')";
+      $query = mysqli_query($conn, $sql);
 
-                // adding amount to reciever's account
-                $newbalance2 = $sql2['amount'] + $amount;
-                $sql = "UPDATE transactions_2 set amount=$newbalance2 where id=$to";
-                mysqli_query($conn,$sql);
-                
-                $sender = $sql1['customer name'];
-                $receiver = $sql2['customer name'];
-                $sql = "INSERT INTO transactions_2(`sender`, `receiver`, `amount`) VALUES ('$sender','$receiver','$amount')";
-                $query = mysqli_query($conn, $sql);
-
-               
-
-                echo "<script> alert(`Successful Transaction!! 
+      //display when transaction is successful
+      echo "<script> alert(`Successful Transaction!! 
 
     Rs. ₹${amount} is sent.
 
     FROM SENDER: ${sender} with Email id: ${sender}@gmail.com 
     TO RECEPIENT: ${receiver} with Email id: ${receiver}@gmail.com.`)               
-                </script>";
+      </script>";
+      
+      echo "<script> alert(`SENDER: ${sender} 
+      Before Transaction Balance: Rs. ₹$beforeT1 
+      After Transaction Balance: Rs. ₹$newbalance1`)</script>";
 
-                /*echo "<script> document.write(`SENDER: ${sender} Before Transaction Balance: Rs. ₹parseInt($newbalance1+$amount) Current Balance: Rs. ₹$newbalance1`)</script>";
-                echo "<script> `RECEIVER: ${receiver} Before Transaction Balance: Rs. ₹parseInt($newbalance1-$amount) Current Balance: Rs. ₹$newbalance2</script>";*/
+      echo "<script> alert(`RECEIVER: ${receiver} 
+      Before Transaction Balance: Rs. ₹$beforeT2 
+      After Transaction Balance: Rs. ₹$newbalance2`)</script>";
                
-                $newbalance= 0;
-                $amount =0;
-
-
-        }
-    
+      $newbalance= 0;
+      $amount =0;
+    }  
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Transaction</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/table.css">
-    <link rel="stylesheet" type="text/css" href="css/navbar.css">
-    
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    <style type="text/css">
+    <style>
     	
-	    button:hover{
-            color: #8bb5f5;
+	  button:hover
+    {
+        color: #8bb5f5;
 		}
-        body{
-        background-image:url("1.png");
-        font-family: Arial, Helvetica, sans-serif;
-    }
+    
     .logo-text, .nav-link1{
       color: white;
       padding-top: 15px;
@@ -120,16 +110,16 @@ if(isset($_POST['submit']))
     .nav-link1:hover{
       color: blue;
     }
-    .container{
+
+    .container
+    {
       padding-top: 30px;
       text-align: center;
-      /* background-color: #8bb5f5; */
       background-size: cover;
-      /* background-image:url("money.jpg"); */
-
     }
 
-    button {
+    button 
+    {
       background-color: #d35a55;
       border: none;
       color: white;
@@ -141,12 +131,6 @@ if(isset($_POST['submit']))
       margin: 4px 2px;
       border-radius: 5px;
     }
-
-    
-
-    body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .topnav {
@@ -210,21 +194,19 @@ if(isset($_POST['submit']))
 <body>
  
 
-<section id="container" background-image= "Back2.png" style="background-repeat: no-repeat; background-size: cover;">
+<section id="container">
     <div class="topnav">
-        <!--<a class="active" href="#home">Home</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>-->
+      
         <h3 style="color: rgb(0, 0, 0); font-size: 40px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">The Precedence Bank</h3 >
         <div class="topnav-right" style="padding-top: 15px;">
-          <a href="index1.php" style="color: rgb(0, 0, 0)">Home</a>
-          <a href="transfer.php" style="color: rgb(0, 0, 0)">Customers List</a>
+          <a href="home_page.php" style="color: rgb(0, 0, 0)">Home</a>
+          <a href="make_transaction.php" style="color: rgb(0, 0, 0)">Customers List</a>
         </div>
       </div>
     </section>
 
 	<div class="container">
-        <h2 class="text-center pt-4">Transaction</h2>
+        <center><h2 class="text-center pt-4">Transaction</h2></center>
             <?php
                 include 'config.php';
                 $sid=$_GET['id'];

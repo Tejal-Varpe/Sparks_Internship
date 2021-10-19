@@ -80,6 +80,15 @@
 
 @media(max-width: 1060px)
 {
+    .image
+    {
+        height: 40vh;
+        border-radius: none;
+        padding-top: 0;
+    }
+}
+@media(max-width: 1060px)
+{
     .con
     {
         grid-template-columns: 1fr;
@@ -91,7 +100,7 @@
     {
         height: 70vh;
         border-radius: none;
-        padding-top: 40%
+        padding-top: 20%
     }
 
     .content
